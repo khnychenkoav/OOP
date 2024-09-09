@@ -1,0 +1,60 @@
+Start testing: Sep 08 17:27 RTZ 2 (çèìà)
+----------------------------------------------------------
+1/1 Testing: VowelCounterTests
+1/1 Test: VowelCounterTests
+Command: "C:/Users/Tema/Desktop/labs/OOP/lab1/build/bin/runTests.exe"
+Directory: C:/Users/Tema/Desktop/labs/OOP/lab1/build
+"VowelCounterTests" start time: Sep 08 17:27 RTZ 2 (çèìà)
+Output:
+----------------------------------------------------------
+[==========] Running 17 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 17 tests from VowelCounterTest
+[ RUN      ] VowelCounterTest.SingleVowel
+[       OK ] VowelCounterTest.SingleVowel (0 ms)
+[ RUN      ] VowelCounterTest.SingleConsonant
+[       OK ] VowelCounterTest.SingleConsonant (0 ms)
+[ RUN      ] VowelCounterTest.CountSimpleString
+[       OK ] VowelCounterTest.CountSimpleString (0 ms)
+[ RUN      ] VowelCounterTest.EmptyStringThrows
+[       OK ] VowelCounterTest.EmptyStringThrows (0 ms)
+[ RUN      ] VowelCounterTest.UppercaseThrows
+[       OK ] VowelCounterTest.UppercaseThrows (0 ms)
+[ RUN      ] VowelCounterTest.NonLatinCharactersThrows
+[       OK ] VowelCounterTest.NonLatinCharactersThrows (0 ms)
+[ RUN      ] VowelCounterTest.OnlyVowels
+[       OK ] VowelCounterTest.OnlyVowels (0 ms)
+[ RUN      ] VowelCounterTest.NoVowels
+[       OK ] VowelCounterTest.NoVowels (0 ms)
+[ RUN      ] VowelCounterTest.MixedCaseStringThrows
+[       OK ] VowelCounterTest.MixedCaseStringThrows (0 ms)
+[ RUN      ] VowelCounterTest.SpaceHandling
+[       OK ] VowelCounterTest.SpaceHandling (0 ms)
+[ RUN      ] VowelCounterTest.NumbersThrow
+[       OK ] VowelCounterTest.NumbersThrow (0 ms)
+[ RUN      ] VowelCounterTest.SpecialCharactersThrow
+[       OK ] VowelCounterTest.SpecialCharactersThrow (0 ms)
+[ RUN      ] VowelCounterTest.OnlySpaces
+[       OK ] VowelCounterTest.OnlySpaces (0 ms)
+[ RUN      ] VowelCounterTest.LongString
+[       OK ] VowelCounterTest.LongString (0 ms)
+[ RUN      ] VowelCounterTest.RepeatedCharacters
+[       OK ] VowelCounterTest.RepeatedCharacters (0 ms)
+[ RUN      ] VowelCounterTest.StringWithTabsAndSpaces
+[       OK ] VowelCounterTest.StringWithTabsAndSpaces (0 ms)
+[ RUN      ] VowelCounterTest.NonAlphaCharactersThrow
+[       OK ] VowelCounterTest.NonAlphaCharactersThrow (0 ms)
+[----------] 17 tests from VowelCounterTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 17 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 17 tests.
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"VowelCounterTests" end time: Sep 08 17:27 RTZ 2 (çèìà)
+"VowelCounterTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Sep 08 17:27 RTZ 2 (çèìà)
