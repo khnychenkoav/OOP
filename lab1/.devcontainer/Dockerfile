@@ -1,4 +1,3 @@
-# Используем многоэтапную сборку для уменьшения размера финального образа
 FROM gcc:latest AS builder
 
 # Устанавливаем зависимости
@@ -14,14 +13,14 @@ WORKDIR /usr/src/app
 # Копируем все файлы из корневой директории проекта
 COPY ./ .
 
-# Собираем приложение и тесты
-RUN cmake . && make && ls -la /usr/src/app
+# Удаляем старый CMakeCache.txt (если существует)
+RUN rm -rf build/CMakeCache.txt
 
+# Собираем проект в отдельной директории build
+RUN mkdir -p build && cd build && cmake .. && make
 
 # Финальный этап
 FROM gcc:latest
-# Копируем собранный исполняемый файл из этапа сборки
-COPY --from=builder /usr/src/app/bin/vowel_counter /usr/local/bin/vowel_counter
+COPY --from=builder /usr/src/app/build/bin/vowel_counter /usr/local/bin/vowel_counter
 
-# Запускаем приложение
 CMD ["vowel_counter"]
