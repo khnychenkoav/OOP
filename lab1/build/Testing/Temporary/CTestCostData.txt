@@ -1,2 +1,0 @@
-VowelCounterTests 10 0.00800251
----
