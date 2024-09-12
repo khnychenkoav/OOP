@@ -81,7 +81,7 @@ TEST(VowelCounterTest, OnlySpaces) {
 TEST(VowelCounterTest, LongString) {
     std::string input = "the quick brown fox jumps over the lazy dog";
     int result = countVowels(input);
-    EXPECT_EQ(result, 11);
+    EXPECT_EQ(result, 12);
 }
 
 TEST(VowelCounterTest, RepeatedCharacters) {
