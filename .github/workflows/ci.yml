@@ -42,6 +42,10 @@ jobs:
         cd lab1/build
         ctest --output-on-failure
 
+    - name: Verify binary
+      run: |
+          ls -la lab1/build/bin
+
       # Шаг для загрузки артефактов сборки
     - name: Upload binary
       uses: actions/upload-artifact@v3
