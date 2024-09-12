@@ -39,5 +39,5 @@ jobs:
     # Запуск тестов
     - name: Run tests
       run: |
-        cd OOP/build
+        cd lab1/build
         ctest --output-on-failure
