@@ -85,5 +85,5 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: vowel_counter
         asset_name: vowel_counter
-        tag: v1.1.0
+        tag: v1.1.3
     
