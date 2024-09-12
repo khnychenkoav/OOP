@@ -23,7 +23,7 @@ jobs:
 
     # Переход в папку OOP, где лежит CMakeLists.txt
     - name: Change to OOP directory
-      run: cd OOP
+      run: cd lab1
 
     # Установка CMake
     - name: Install CMake
