@@ -30,7 +30,7 @@ jobs:
     # Сборка проекта с использованием встроенного FetchContent для GoogleTest
     - name: Build with CMake
       run: |
-        cd OOP
+        cd lab1
         mkdir -p build
         cd build
         cmake ..
