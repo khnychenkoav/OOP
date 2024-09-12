@@ -21,28 +21,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Переход в папку OOP, где лежит CMakeLists.txt
-    - name: Change to OOP directory
-      run: cd lab1
-
-    # Установка CMake
-    - name: Install CMake
-      run: sudo apt-get install cmake
-
-    # Установка GCC
-    - name: Install GCC
-      run: sudo apt-get install g++
-
-    # Установка GoogleTest
-    - name: Install GoogleTest dependencies
+    # Установка CMake и других инструментов
+    - name: Install dependencies
       run: |
-        sudo apt-get install libgtest-dev
-        cd /usr/src/gtest
-        sudo cmake CMakeLists.txt
-        sudo make
-        sudo cp *.a /usr/lib
+        sudo apt-get update
+        sudo apt-get install cmake g++ -y
 
-    # Сборка проекта
+    # Сборка проекта с использованием встроенного FetchContent для GoogleTest
     - name: Build with CMake
       run: |
         cd OOP
