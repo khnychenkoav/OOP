@@ -1,6 +1,5 @@
 #include <string>
 #include <stdexcept>
-#include <algorithm>
 #include <cctype>
 
 int countVowels(const std::string& input) {
