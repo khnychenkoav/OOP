@@ -13,8 +13,8 @@
    `cd lab1`
 
 2. Запустите Docker:  
-   `docker build -t vowel_counter .`  
-   `docker run --rm vowel_counter`
+   `docker build -t vowel_counter -f .devcontainer/Dockerfile .`  
+   `docker run -it vowel_counter`
 
 ### Локальная установка
 
