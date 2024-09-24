@@ -10,12 +10,10 @@ else()
     set(EXECUTABLE_NAME "TwelveLab")
 endif()
 
-# Добавляем исходные файлы
 add_executable(${EXECUTABLE_NAME}
     src/main.cpp
     src/Twelve.cpp
 )
-# Подключаем Google Test
 enable_testing()
 
 include(FetchContent)
@@ -34,7 +32,6 @@ add_executable(runTests
 
 target_link_libraries(runTests gtest gtest_main pthread)
 
-# Добавляем команду для запуска тестов
 add_test(NAME TwelveTests COMMAND runTests)
 
 set_target_properties(${EXECUTABLE_NAME} PROPERTIES

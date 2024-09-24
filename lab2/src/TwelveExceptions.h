@@ -2,27 +2,64 @@
 #include <stdexcept>
 #include <string>
 
-// Базовый класс для исключений, связанных с классом Twelve
 class TwelveException : public std::runtime_error {
 public:
-    explicit TwelveException(const std::string& message) : std::runtime_error(message) {}
+    explicit TwelveException(const std::string& message) 
+        : std::runtime_error("TwelveException: " + message) {}
+
+    virtual std::string details() const {
+        return what();
+    }
 };
 
-// Исключение для некорректных символов в строке
 class InvalidCharacterException : public TwelveException {
+private:
+    char invalidChar;
+    size_t position;
+
 public:
-    InvalidCharacterException(char invalidChar) 
-        : TwelveException("Invalid character in string: " + std::string(1, invalidChar)) {}
+    InvalidCharacterException(char invalidChar, size_t pos = 0) 
+        : TwelveException("Invalid character '" + std::string(1, invalidChar) + "' at position " + std::to_string(pos)),
+          invalidChar(invalidChar), position(pos) {}
+
+    char getInvalidChar() const {
+        return invalidChar;
+    }
+
+    std::string details() const override {
+        return "Character '" + std::string(1, invalidChar) + "' is not valid at position " + std::to_string(position);
+    }
 };
 
-// Исключение для отрицательного результата при вычитании
 class NegativeResultException : public TwelveException {
 public:
-    NegativeResultException() : TwelveException("Result cannot be negative") {}
+    NegativeResultException() 
+        : TwelveException("Result cannot be negative") {}
+
+    std::string details() const override {
+        return "Negative result exception occurred: result of subtraction is less than zero.";
+    }
 };
 
-// Исключение для переполнения при сложении
 class OverflowException : public TwelveException {
+private:
+    unsigned char carryValue;
+
 public:
-    OverflowException() : TwelveException("Overflow occurred during arithmetic operation") {}
+    OverflowException(unsigned char carry = 0) 
+        : TwelveException("Overflow occurred during arithmetic operation, carry: " + std::to_string(carry)),
+          carryValue(carry) {}
+
+    unsigned char getCarryValue() const {
+        return carryValue;
+    }
+
+    std::string details() const override {
+        return "Overflow with carry value: " + std::to_string(carryValue);
+    }
+};
+
+class DivisionByZeroException : public std::runtime_error {
+public:
+    DivisionByZeroException() : std::runtime_error("Division by zero is not allowed") {}
 };

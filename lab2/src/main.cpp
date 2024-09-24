@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
+#include <limits>
 #include "Twelve.h"
+#include "TwelveExceptions.h"
 
 void displayMenu() {
     std::cout << "\n--- Menu ---\n";
@@ -20,12 +22,16 @@ int main() {
 
     while (choice != 6) {
         displayMenu();
-        std::cin >> choice;
+        if (!(std::cin >> choice)) {
+            std::cerr << "Invalid input. Please enter a number.\n";
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
+        }
 
         try {
             switch (choice) {
                 case 1: {
-                    // Ввод двух чисел
                     std::string input1, input2;
                     std::cout << "Enter first 12-base number (valid digits: 0-9, A-B): ";
                     std::cin >> input1;
@@ -40,7 +46,6 @@ int main() {
                     break;
                 }
                 case 2: {
-                    // Сложение чисел
                     if (!numbersEntered) {
                         std::cout << "Please enter the numbers first (option 1).\n";
                         break;
@@ -50,7 +55,6 @@ int main() {
                     break;
                 }
                 case 3: {
-                    // Вычитание чисел
                     if (!numbersEntered) {
                         std::cout << "Please enter the numbers first (option 1).\n";
                         break;
@@ -60,7 +64,6 @@ int main() {
                     break;
                 }
                 case 4: {
-                    // Сравнение чисел
                     if (!numbersEntered) {
                         std::cout << "Please enter the numbers first (option 1).\n";
                         break;
@@ -76,7 +79,6 @@ int main() {
                     break;
                 }
                 case 5: {
-                    // Печать чисел
                     if (!numbersEntered) {
                         std::cout << "Please enter the numbers first (option 1).\n";
                         break;
@@ -94,8 +96,14 @@ int main() {
                     break;
                 }
             }
+        } catch (const InvalidCharacterException& e) {
+            std::cerr << "Error: Invalid character entered. " << e.what() << "\n";
+        } catch (const OverflowException& e) {
+            std::cerr << "Error: Overflow occurred during arithmetic operation. " << e.what() << "\n";
+        } catch (const NegativeResultException& e) {
+            std::cerr << "Error: Subtraction result is negative. " << e.what() << "\n";
         } catch (const std::exception& e) {
-            std::cerr << "Error: " << e.what() << "\n";
+            std::cerr << "An error occurred: " << e.what() << "\n";
         }
     }
 
