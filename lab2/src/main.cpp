@@ -96,10 +96,6 @@ int main() {
                     break;
                 }
             }
-        } catch (const InvalidCharacterException& e) {
-            std::cerr << "Error: Invalid character entered. " << e.what() << "\n";
-        } catch (const OverflowException& e) {
-            std::cerr << "Error: Overflow occurred during arithmetic operation. " << e.what() << "\n";
         } catch (const NegativeResultException& e) {
             std::cerr << "Error: Subtraction result is negative. " << e.what() << "\n";
         } catch (const std::exception& e) {
