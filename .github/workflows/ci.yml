@@ -15,20 +15,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Шаги для выполнения сборки и тестирования
-
     # Проверка кода из репозитория
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Установка CMake и других инструментов
+    # Установка CMake, g++, и всех необходимых библиотек
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install cmake g++ -y
+        sudo apt-get install -y \
+          cmake \
+          g++ \
+          libsfml-dev \
+          libx11-dev \
+          libxrandr-dev \
+          libxi-dev \
+          libudev-dev \
+          libopenal-dev \
+          libvorbis-dev \
+          libflac-dev
 
-    # Сборка проекта с использованием встроенного FetchContent для GoogleTest
-    - name: Build with CMake
+    # Сборка проекта lab1
+    - name: Build lab1 with CMake
       run: |
         cd lab1
         mkdir -p build
@@ -36,31 +44,56 @@ jobs:
         cmake ..
         make
         cd ../
-        cd ../
+
+    # Сборка проекта lab2
+    - name: Build lab2 with CMake
+      run: |
         cd lab2
         mkdir -p build
         cd build
         cmake ..
         make
         cd ../
+
+    # Сборка проекта lab3
+    - name: Build lab3 with CMake
+      run: |
+        cd lab3
+        mkdir -p build
+        cd build
+        cmake ..
+        make
         cd ../
 
-    # Запуск тестов
-    - name: Run tests
+    # Запуск тестов lab1
+    - name: Run tests lab1
       run: |
         cd lab1/build
         ctest --output-on-failure
         cd ../
-        cd ../
+
+    # Запуск тестов lab2
+    - name: Run tests lab2
+      run: |
         cd lab2/build
         ctest --output-on-failure
+        cd ../
 
-    - name: Verify binary
+    # Запуск тестов lab3
+    - name: Run tests lab3
       run: |
-          ls -la lab1/build/bin
-          ls -la lab2/build/bin
+        cd lab3/build
+        ctest --output-on-failure
+        cd ../
 
-      # Шаг для загрузки артефактов сборки
+    # Верификация бинарных файлов
+    - name: Verify binaries
+      run: |
+        ls -la lab1/build/bin
+        ls -la lab2/build/bin
+        ls -la lab3/build/bin
+
+    # Шаги для загрузки артефактов сборки
     - name: Upload binary lab1
       uses: actions/upload-artifact@v3
       with:
@@ -73,7 +106,12 @@ jobs:
         name: twelve_lab_binary
         path: lab2/build/bin/TwelveLab
 
-  # Шаг для создания релиза после успешной сборки и тестирования
+    - name: Upload binary lab3
+      uses: actions/upload-artifact@v3
+      with:
+        name: figures_lab_binary
+        path: lab3/build/bin/Figures
+
   release:
 
     needs: build
@@ -93,14 +131,19 @@ jobs:
       with:
         name: twelve_lab_binary
 
+    - name: Download binary lab3
+      uses: actions/download-artifact@v3
+      with:
+        name: figures_lab_binary
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       with:
-        tag_name: v2.0.5
-        release_name: "Release v2.0.5"
+        tag_name: v3.0.0
+        release_name: "Release v3.0.0"
         draft: false
         prerelease: false
 
@@ -110,7 +153,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: vowel_counter
         asset_name: vowel_counter
-        tag: v2.0.5
+        tag: v3.0.0
 
     - name: Upload Release Asset lab2
       uses: svenstaro/upload-release-action@v2
@@ -118,5 +161,12 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: TwelveLab
         asset_name: twelve_lab
-        tag: v2.0.5
-    
+        tag: v3.0.0
+
+    - name: Upload Release Asset lab3
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: Figures
+        asset_name: figures
+        tag: v3.0.0

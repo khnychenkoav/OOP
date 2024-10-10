@@ -1,0 +1,11 @@
+{
+    "name": "figurelab",
+    "dockerFile": "../.devcontainer/Dockerfile",
+    "settings": {},
+    "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools"
+    ],
+    "runArgs": ["--init"],
+    "workspaceFolder": "/usr/src/app"
+}
