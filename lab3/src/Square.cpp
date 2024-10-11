@@ -57,7 +57,7 @@ bool Square::ValidateSquare() const {
 void Square::SuggestCorrectPoints() const {
     auto [centerX, centerY] = GeometricCenter();
     double radius = std::hypot(points_[0].first - centerX, points_[0].second - centerY);
-    const double angleStep = M_PI / 2; // Угол между вершинами квадрата (90 градусов)
+    const double angleStep = M_PI / 2;
 
     std::cout << "Suggested correct points for a square:\n";
     for (size_t i = 0; i < 4; ++i) {

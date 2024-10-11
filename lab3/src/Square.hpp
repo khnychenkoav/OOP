@@ -36,4 +36,4 @@ private:
 std::ostream& operator<<(std::ostream& os, const Square& square);
 std::istream& operator>>(std::istream& is, Square& square);
 
-#endif // SQUARE_HPP
+#endif

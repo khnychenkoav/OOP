@@ -14,7 +14,6 @@ include_directories(src)
 
 include(FetchContent)
 
-# Fetch GoogleTest
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
@@ -22,7 +21,6 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-# Fetch SFML
 FetchContent_Declare(
     SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
@@ -30,7 +28,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SFML)
 
-# Main application
 add_executable(${EXECUTABLE_NAME}
     src/main.cpp
     src/Triangle.cpp
@@ -47,7 +44,6 @@ set_target_properties(${EXECUTABLE_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
-# Tests
 enable_testing()
 add_executable(runTests
     tests/Tests.cpp

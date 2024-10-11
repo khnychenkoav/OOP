@@ -36,4 +36,4 @@ private:
 std::ostream& operator<<(std::ostream& os, const Octagon& octagon);
 std::istream& operator>>(std::istream& is, Octagon& octagon);
 
-#endif // OCTAGON_HPP
+#endif

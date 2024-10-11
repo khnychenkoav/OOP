@@ -1,7 +1,7 @@
-# Twelve Lab Project
+# Figure Lab Project
 
 ## Описание
-Проект Twelve Lab — это приложение на C++, которое реализует класс двенадцатеричных чисел и операций над ними, а также удобный интерфейс для работы. Также включает автоматическое тестирование с использованием Google Test.
+Проект Figure Lab — это приложение на C++, которое реализует классы различных фигур и операций над ними, а также удобный интерфейс для работы. Также включает автоматическое тестирование с использованием Google Test.
 
 ## Установка и запуск
 
@@ -10,11 +10,11 @@
 1. Клонируйте репозиторий:  
    `git clone https://github.com/khnychenkoav/OOP.git`  
    `cd OOP`
-   `cd lab2`
+   `cd lab3`
 
 2. Запустите Docker:  
-   `docker build -t twelvelab -f .devcontainer/Dockerfile .`  
-   `docker run -it twelvelab`
+   `docker build -t figure -f .devcontainer/Dockerfile .`  
+   `docker run -it figure`
 
 ### Локальная установка
 
@@ -26,7 +26,7 @@
 2. Клонируйте репозиторий:  
    `git clone https://github.com/khnychenkoav/OOP.git`  
    `cd OOP`
-   `cd lab2`
+   `cd lab3`
 
 3. Сборка проекта:  
    `mkdir build`  
@@ -35,7 +35,7 @@
    `make`
 
 4. Запуск программы:  
-   `./build/bin/TwelveLab`
+   `./build/bin/Figure.exe`
 
 ### Запуск тестов
 

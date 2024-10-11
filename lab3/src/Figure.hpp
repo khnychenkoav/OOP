@@ -19,4 +19,4 @@ public:
     virtual ~Figure() = default;
 };
 
-#endif // FIGURE_HPP
+#endif

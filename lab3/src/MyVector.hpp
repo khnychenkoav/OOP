@@ -20,7 +20,6 @@ public:
     const T& operator[](std::size_t index) const;
     std::size_t size() const;
 
-    // New: Iterator support
     T* begin();
     T* end();
     const T* begin() const;
@@ -36,4 +35,4 @@ private:
 
 #include "MyVector.tpp"
 
-#endif // MYVECTOR_HPP
+#endif

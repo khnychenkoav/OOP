@@ -36,4 +36,4 @@ private:
 std::ostream& operator<<(std::ostream& os, const Triangle& triangle);
 std::istream& operator>>(std::istream& is, Triangle& triangle);
 
-#endif // TRIANGLE_HPP
+#endif
