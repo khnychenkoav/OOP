@@ -34,7 +34,6 @@ jobs:
           libopenal-dev \
           libvorbis-dev \
           libflac-dev
-          wget \
           git
 
     # Установка Emscripten
