@@ -34,7 +34,6 @@ jobs:
           libopenal-dev \
           libvorbis-dev \
           libflac-dev
-          python3 \
           wget \
           git
 
@@ -269,4 +268,4 @@ jobs:
         file: Allocators
         asset_name: allocators
         tag: v5.0.0
-        
+
