@@ -33,7 +33,9 @@ jobs:
           libudev-dev \
           libopenal-dev \
           libvorbis-dev \
-          libflac-dev
+          libflac-dev \
+          python3 \
+          wget \
           git
 
     # Установка Emscripten
