@@ -43,10 +43,10 @@ jobs:
       run: |
         sudo git clone https://github.com/emscripten-core/emsdk.git /emsdk
         cd /emsdk
-        ./emsdk install latest
-        ./emsdk activate latest
-        echo "source /emsdk/emsdk_env.sh" >> ~/.bashrc
-        source /emsdk/emsdk_env.sh
+        sudo ./emsdk install latest
+        sudo ./emsdk activate latest
+        sudo echo "source /emsdk/emsdk_env.sh" >> ~/.bashrc
+        sudo source /emsdk/emsdk_env.sh
 
     # Установка Google Test
     - name: Install Google Test
