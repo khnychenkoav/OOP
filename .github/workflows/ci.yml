@@ -46,7 +46,8 @@ jobs:
         sudo ./emsdk install latest
         sudo ./emsdk activate latest
         sudo echo "source /emsdk/emsdk_env.sh" >> ~/.bashrc
-        sudo source /emsdk/emsdk_env.sh
+        sudo -s
+        source /emsdk/emsdk_env.sh
 
     # Установка Google Test
     - name: Install Google Test
