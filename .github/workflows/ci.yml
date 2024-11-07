@@ -34,6 +34,30 @@ jobs:
           libopenal-dev \
           libvorbis-dev \
           libflac-dev
+          python3 \
+          wget \
+          git
+
+    # Установка Emscripten
+    - name: Install Emscripten
+      run: |
+        git clone https://github.com/emscripten-core/emsdk.git /emsdk
+        cd /emsdk
+        ./emsdk install latest
+        ./emsdk activate latest
+        echo "source /emsdk/emsdk_env.sh" >> ~/.bashrc
+        source /emsdk/emsdk_env.sh
+
+    # Установка Google Test
+    - name: Install Google Test
+      run: |
+        git clone https://github.com/google/googletest.git
+        cd googletest
+        mkdir build
+        cd build
+        cmake ..
+        make
+        sudo make install
 
     # Сборка проекта lab1
     - name: Build lab1 with CMake
@@ -74,6 +98,17 @@ jobs:
         cmake ..
         make
         cd ../
+    
+    # Сборка проекта lab5
+    - name: Build lab5 with CMake
+      run: |
+        cd lab5
+        mkdir -p build
+        cd build
+        source /emsdk/emsdk_env.sh
+        cmake ..
+        make
+        cd ../
 
     # Запуск тестов lab1
     - name: Run tests lab1
@@ -103,6 +138,13 @@ jobs:
         ctest --output-on-failure
         cd ../
 
+    # Запуск тестов lab5
+    - name: Run tests lab5
+      run: |
+        cd lab5/build
+        ctest --output-on-failure
+        cd ../
+
     # Верификация бинарных файлов
     - name: Verify binaries
       run: |
@@ -110,6 +152,7 @@ jobs:
         ls -la lab2/build/bin
         ls -la lab3/build/bin
         ls -la lab4/build/bin
+        ls -la lab5/build/bin
 
     # Шаги для загрузки артефактов сборки
     - name: Upload binary lab1
@@ -135,6 +178,12 @@ jobs:
       with:
         name: templates_lab_binary
         path: lab4/build/bin/Templates
+
+    - name: Upload binary lab5
+      uses: actions/upload-artifact@v3
+      with:
+        name: lab5_binary
+        path: lab5/build/bin/Allocators
 
   release:
 
@@ -165,14 +214,19 @@ jobs:
       with:
         name: templates_lab_binary
 
+    - name: Download binary lab5
+      uses: actions/download-artifact@v3
+      with:
+        name: allocators_lab_binary
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       with:
-        tag_name: v4.0.1
-        release_name: "Release v4.0.1"
+        tag_name: v5.0.0
+        release_name: "Release v5.0.0"
         draft: false
         prerelease: false
 
@@ -182,7 +236,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: vowel_counter
         asset_name: vowel_counter
-        tag: v4.0.1
+        tag: v5.0.0
 
     - name: Upload Release Asset lab2
       uses: svenstaro/upload-release-action@v2
@@ -190,7 +244,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: TwelveLab
         asset_name: twelve_lab
-        tag: v4.0.1
+        tag: v5.0.0
 
     - name: Upload Release Asset lab3
       uses: svenstaro/upload-release-action@v2
@@ -198,7 +252,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: Figures
         asset_name: figures
-        tag: v4.0.1
+        tag: v5.0.0
 
     - name: Upload Release Asset lab4
       uses: svenstaro/upload-release-action@v2
@@ -206,4 +260,13 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: Templates
         asset_name: templates
-        tag: v4.0.1
+        tag: v5.0.0
+
+    - name: Upload Release Asset lab5
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: Allocators
+        asset_name: allocators
+        tag: v5.0.0
+        

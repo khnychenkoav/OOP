@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Visualization of List with Memory Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --background-color: #f0f2f5;
+            --text-color: #000;
+            --node-background: #87CEEB;
+            --button-background: #007bff;
+            --button-hover: #0056b3;
+        }
+
+        body.dark-theme {
+            --background-color: #121212;
+            --text-color: #fff;
+            --node-background: #1E88E5;
+            --button-background: #681dc4;
+            --button-hover: #3700B3;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        #controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        #controls input, #controls select {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+        #controls button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: var(--button-background);
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+        }
+        #controls button:hover {
+            background-color: var(--button-hover);
+        }
+        #listContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .node {
+            position: relative;
+            padding: 10px;
+            margin: 5px;
+            background-color: var(--node-background);
+            border: 1px solid #000;
+            border-radius: 5px;
+            min-width: 50px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        .node.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .node:hover {
+            transform: scale(1.1);
+        }
+        .node .pointer {
+            position: absolute;
+            top: 50%;
+            right: -20px;
+            transform: translateY(-50%);
+            font-size: 24px;
+        }
+        #memoryInfo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #memoryChartContainer {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #memoryChart {
+            width: 100%;
+            height: 400px;
+        }
+        #themeToggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--button-background);
+            color: var(--text-color);
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        #themeToggle:hover {
+            background-color: var(--button-hover);
+        }
+    </style>
+</head>
+<body>
+    <button id="themeToggle">🌙</button>
+    <h1>Визуализация двунаправленного списка с управлением памятью</h1>
+    <div id="controls">
+        <select id="dataType">
+            <option value="int">int</option>
+            <option value="string">string</option>
+        </select>
+        <input type="text" id="inputValue" placeholder="Введите значение">
+        <button id="pushBackBtn">Push Back</button>
+        <button id="pushFrontBtn">Push Front</button>
+        <button id="popBackBtn">Pop Back</button>
+        <button id="popFrontBtn">Pop Front</button>
+        <button id="clearBtn">Clear List</button>
+        <button id="sortBtn">Sort List</button>
+        <button id="searchBtn">Search Value</button>
+    </div>
+    <div id="listContainer"></div>
+    <div id="memoryInfo">
+        <strong>Allocated Blocks:</strong> 0 <br>
+        <strong>Free Blocks:</strong> 0
+    </div>
+    <div id="memoryChartContainer">
+        <canvas id="memoryChart"></canvas>
+    </div>
+    <!-- Подключение Emscripten модуля -->
+    <script src="Templates.js"></script>
+    <!-- Ваш JavaScript код -->
+    <script src="list.js"></script>
+</body>
+</html>
