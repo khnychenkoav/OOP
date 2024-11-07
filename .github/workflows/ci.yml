@@ -183,7 +183,7 @@ jobs:
     - name: Upload binary lab5
       uses: actions/upload-artifact@v3
       with:
-        name: lab5_binary
+        name: allocators_lab_binary
         path: lab5/build/bin/Allocators
 
   release:
