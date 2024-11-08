@@ -227,7 +227,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       with:
         tag_name: v5.0.0
-        release_name: "Release v5.0.0"
+        release_name: "Release v5.0.1"
         draft: false
         prerelease: false
 
@@ -237,7 +237,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: vowel_counter
         asset_name: vowel_counter
-        tag: v5.0.0
+        tag: v5.0.1
 
     - name: Upload Release Asset lab2
       uses: svenstaro/upload-release-action@v2
@@ -245,7 +245,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: TwelveLab
         asset_name: twelve_lab
-        tag: v5.0.0
+        tag: v5.0.1
 
     - name: Upload Release Asset lab3
       uses: svenstaro/upload-release-action@v2
@@ -253,7 +253,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: Figures
         asset_name: figures
-        tag: v5.0.0
+        tag: v5.0.1
 
     - name: Upload Release Asset lab4
       uses: svenstaro/upload-release-action@v2
@@ -261,7 +261,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: Templates
         asset_name: templates
-        tag: v5.0.0
+        tag: v5.0.1
 
     - name: Upload Release Asset lab5
       uses: svenstaro/upload-release-action@v2
@@ -269,5 +269,5 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: Allocators
         asset_name: allocators
-        tag: v5.0.0
+        tag: v5.0.1
 
