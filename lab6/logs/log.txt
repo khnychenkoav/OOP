@@ -1,0 +1,72 @@
+Squirrel Squirrel_1 killed Elf Elf_2
+Elf Elf_2 also killed Squirrel Squirrel_1
+Squirrel Squirrel_1 killed Elf Elf_2
+Elf Elf_2 also killed Squirrel Squirrel_1
+Elf Elf_2 killed Robber Robber_3
+Robber Robber_3 killed Squirrel Squirrel_1
+Elf Elf_2 killed Robber Robber_3
+Squirrel Squirrel_1 killed Elf Elf_2
+Elf Elf_2 also killed Squirrel Squirrel_1
+Robber Robber_3 killed Squirrel Squirrel_5
+Squirrel Squirrel_4 killed Elf Elf_2
+Elf Elf_2 also killed Squirrel Squirrel_4
+Robber Robber_3 killed Squirrel Squirrel_1
+Squirrel Squirrel_3 killed Elf Elf_1
+Elf Elf_1 also killed Squirrel Squirrel_3
+Robber Robber_3 killed Squirrel Squirrel_1
+Elf Elf_2 killed Robber Robber_3
+Squirrel Squirrel_1 killed Elf Elf_2
+Robber Robber_2 killed Squirrel Squirrel_1
+Elf Elf_4 killed Robber Robber_2
+Squirrel Squirrel_5 killed Elf Elf_4
+Elf Elf_4 also killed Squirrel Squirrel_5
+Elf Elf_4 killed Robber Robber_3
+Squirrel Squirrel_1 killed Elf Elf_4
+Squirrel Squirrel_5 killed Elf Elf_2
+Elf Elf_2 also killed Squirrel Squirrel_5
+Elf Elf_3 killed Robber Robber_7
+Squirrel Squirrel_1 killed Elf Elf_3
+Squirrel Squirrel_2 killed Elf Elf_6
+Squirrel Squirrel_1 killed Elf Elf_4
+Squirrel Squirrel_1 killed Elf Elf_5
+Squirrel Squirrel_2 killed Elf Elf_8
+Elf Elf_8 also killed Squirrel Squirrel_2
+Squirrel Squirrel_1 killed Elf Elf_5
+Elf Elf_5 also killed Squirrel Squirrel_1
+Robber Robber_12 killed Squirrel Squirrel_7
+Robber Robber_10 killed Squirrel Squirrel_5
+Squirrel Squirrel_6 killed Elf Elf_3
+Robber Robber_10 killed Squirrel Squirrel_6
+Robber Robber_10 killed Squirrel Squirrel_8
+Squirrel Squirrel_9 killed Elf Elf_6
+Robber Robber_10 killed Squirrel Squirrel_9
+Elf Elf_4 killed Robber Robber_11
+Elf Elf_4 killed Robber Robber_10
+Elf Elf_7 killed Robber Robber_13
+Elf Elf_4 killed Robber Robber_12
+Robber Robber_4 killed Squirrel Squirrel_3
+Elf Elf_4 killed Robber Robber_4
+Elf Elf_4 killed Robber Robber_4
+Elf Elf_4 killed Robber Robber_7
+Elf Elf_4 killed Robber Robber_6
+Elf Elf_7 killed Robber Robber_5
+Elf Elf_7 killed Robber Robber_3
+Elf Elf_6 killed Robber Robber_9
+Squirrel Squirrel_1 killed Elf Elf_7
+Squirrel Squirrel_1 killed Elf Elf_8
+Elf Elf_8 also killed Squirrel Squirrel_1
+Squirrel Squirrel_3 killed Elf Elf_6
+Squirrel Squirrel_3 killed Elf Elf_6
+Squirrel Squirrel_5 killed Elf Elf_8
+Squirrel Squirrel_2 killed Elf Elf_7
+Squirrel Squirrel_5 killed Elf Elf_5
+Elf Elf_5 also killed Squirrel Squirrel_5
+Elf Elf_6 killed Robber Robber_7
+Squirrel Squirrel_3 killed Elf Elf_4
+Elf Elf_4 also killed Squirrel Squirrel_3
+Robber Robber_9 killed Squirrel Squirrel_2
+Elf Elf_5 killed Robber Robber_8
+Robber Robber_9 killed Squirrel Squirrel_4
+Elf Elf_5 killed Robber Robber_9
+Robber Robber_3 killed Squirrel Squirrel_1
+Elf Elf_2 killed Robber Robber_3
