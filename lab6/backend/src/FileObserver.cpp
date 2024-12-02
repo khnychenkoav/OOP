@@ -1,5 +1,3 @@
-// backend/src/FileObserver.cpp
-
 #include "FileObserver.h"
 
 FileObserver::FileObserver(const std::string& filename) {

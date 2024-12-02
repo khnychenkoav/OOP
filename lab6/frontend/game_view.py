@@ -1,7 +1,146 @@
+# frontend/game_view.py
+
 import pygame
 import sys
+import time
+import math
+import random
 from controllers.game_controller import GameController
 from utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, BG_COLOR, FPS
+
+class Button:
+    def __init__(self, text, rect, inactive_color, active_color, action=None, font=None):
+        self.text = text
+        self.rect = pygame.Rect(rect)
+        self.initial_rect = self.rect.copy()
+        self.inactive_color = inactive_color
+        self.active_color = active_color
+        self.color = inactive_color
+        self.action = action
+        self.font = font
+        self.hovered = False
+        self.animation_progress = 0  # Для анимации при наведении
+        self.visibility = 1.0  # Прозрачность кнопки
+        self.full_width = self.rect.width
+        self.hidden_width = 20  # Ширина видимой части в скрытом состоянии
+        self.visible_x = SCREEN_WIDTH - self.full_width
+        self.hidden_x = SCREEN_WIDTH - self.hidden_width
+        self.rect.x = self.hidden_x
+
+    def draw(self, surface):
+        self.update()
+        shadow_offset = 5
+        shadow_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+        shadow_color = (0, 0, 0, int(100 * self.visibility))  # Полупрозрачная тень
+        pygame.draw.rect(shadow_surface, shadow_color, shadow_surface.get_rect(), border_radius=10)
+        surface.blit(shadow_surface, (self.rect.x + shadow_offset, self.rect.y + shadow_offset))
+
+        color_with_alpha = (*self.color[:3], int(255 * self.visibility))
+        button_surface = pygame.Surface(self.rect.size, pygame.SRCALPHA)
+        pygame.draw.rect(button_surface, color_with_alpha, button_surface.get_rect(), border_radius=10)
+        if self.font:
+            text_surf = self.font.render(self.text, True, (255, 255, 255))
+            text_surf.set_alpha(int(255 * self.visibility))
+            text_rect = text_surf.get_rect(center=button_surface.get_rect().center)
+            button_surface.blit(text_surf, text_rect)
+        surface.blit(button_surface, self.rect.topleft)
+
+    def update(self):
+        mouse_pos = pygame.mouse.get_pos()
+        # Проверяем, находится ли курсор над кнопкой
+        if self.rect.collidepoint(mouse_pos):
+            self.hovered = True
+            self.animation_progress = min(self.animation_progress + 0.1, 1)
+        else:
+            self.hovered = False
+            self.animation_progress = max(self.animation_progress - 0.1, 0)
+
+        # Анимация выдвижения кнопки
+        self.rect.x = self.hidden_x + (self.visible_x - self.hidden_x) * self.ease_in_out(self.animation_progress)
+
+        # Изменение цвета с плавной анимацией
+        self.color = self.interpolate_color(self.inactive_color, self.active_color, self.ease_in_out(self.animation_progress))
+
+        # Полупрозрачность кнопки
+        self.visibility = 0.7 + 0.3 * self.animation_progress  # От 0.7 до 1.0
+
+    def interpolate_color(self, color_start, color_end, progress):
+        return (
+            int(color_start[0] + (color_end[0] - color_start[0]) * progress),
+            int(color_start[1] + (color_end[1] - color_start[1]) * progress),
+            int(color_start[2] + (color_end[2] - color_start[2]) * progress),
+        )
+
+    def ease_in_out(self, t):
+        return t * t * (3 - 2 * t)
+
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos):
+            if self.action:
+                self.action()
+
+class Notification:
+    def __init__(self, text, duration, font, screen_width):
+        self.text = text
+        self.duration = duration
+        self.start_time = time.time()
+        self.font = font
+        self.alpha = 0
+        self.max_alpha = 200
+        self.surface = None
+        self.screen_width = screen_width
+
+    def update(self):
+        elapsed = time.time() - self.start_time
+        if elapsed < self.duration:
+            self.alpha = min(self.max_alpha, self.alpha + 5)
+        else:
+            self.alpha = max(0, self.alpha - 5)
+
+        if self.alpha > 0:
+            text_surf = self.font.render(self.text, True, (255, 255, 255))
+            text_surf.set_alpha(self.alpha)
+            self.surface = text_surf
+        else:
+            self.surface = None
+
+    def draw(self, surface):
+        if self.surface:
+            rect = self.surface.get_rect(center=(self.screen_width // 2, 50))
+            surface.blit(self.surface, rect)
+
+class WeatherEffect:
+    def __init__(self, effect_type, screen_size):
+        self.effect_type = effect_type
+        self.particles = []
+        self.screen_width, self.screen_height = screen_size
+        self.create_particles()
+
+    def create_particles(self):
+        for _ in range(100):
+            x = random.randint(0, self.screen_width)
+            y = random.randint(-self.screen_height, 0)
+            speed = random.uniform(100, 200)
+            self.particles.append({'pos': [x, y], 'speed': speed})
+
+    def update(self, dt):
+        for particle in self.particles:
+            if self.effect_type == 'rain':
+                particle['pos'][1] += particle['speed'] * dt
+                particle['pos'][0] += random.uniform(-10, 10) * dt
+            elif self.effect_type == 'snow':
+                particle['pos'][1] += particle['speed'] * dt * 0.5
+                particle['pos'][0] += random.uniform(-30, 30) * dt
+            if particle['pos'][1] > self.screen_height:
+                particle['pos'][1] = random.randint(-self.screen_height, 0)
+                particle['pos'][0] = random.randint(0, self.screen_width)
+
+    def draw(self, surface):
+        for particle in self.particles:
+            if self.effect_type == 'rain':
+                pygame.draw.line(surface, (173, 216, 230), particle['pos'], (particle['pos'][0], particle['pos'][1] + 5))
+            elif self.effect_type == 'snow':
+                pygame.draw.circle(surface, (255, 250, 250), particle['pos'], 3)
 
 class GameView:
     def __init__(self):
@@ -10,44 +149,159 @@ class GameView:
         pygame.display.set_caption('Balagur Fate 3 Dungeon Editor')
         self.clock = pygame.time.Clock()
         self.controller = GameController()
-        self.font = pygame.font.Font(None, 24)
+        self.font = pygame.font.Font('resources/fonts/Roboto-Regular.ttf', 20)
+        self.large_font = pygame.font.Font('resources/fonts/Roboto-Bold.ttf', 28)
+        self.generate_npc_images()
         self.npc_images = {
-            'Squirrel': pygame.image.load('resources/images/squirrel.png').convert_alpha(),
-            'Elf': pygame.image.load('resources/images/elf.png').convert_alpha(),
-            'Robber': pygame.image.load('resources/images/robber.png').convert_alpha(),
+            'Squirrel': pygame.image.load('resources/images/generated/squirrel.png').convert_alpha(),
+            'Elf': pygame.image.load('resources/images/generated/elf.png').convert_alpha(),
+            'Robber': pygame.image.load('resources/images/generated/robber.png').convert_alpha(),
         }
         self.npc_colors = {
             'Squirrel': (255, 0, 0),
             'Elf': (0, 255, 0),
             'Robber': (0, 0, 255),
         }
-        self.setup_ui()
+        self.notifications = []
         self.selected_npc_type = None
+        self.setup_ui()
+        self.parallax_layers = self.load_parallax_background()
+        self.forest_surface = self.generate_forest_background()
+        self.time_of_day = 0  # 0 - день, 1 - ночь
+        self.weather = None  # 'rain' или 'snow' или None
+        self.last_weather_change = time.time()
+        self.weather_effect = None
 
     def setup_ui(self):
-        self.buttons = {
-            'Start': {'rect': pygame.Rect(650, 50, 150, 40), 'color': (0, 200, 0)},
-            'Stop': {'rect': pygame.Rect(650, 110, 150, 40), 'color': (200, 0, 0)},
-            'Next Step': {'rect': pygame.Rect(650, 170, 150, 40), 'color': (0, 0, 200)},
-            'Add Squirrel': {'rect': pygame.Rect(650, 230, 150, 40), 'color': (100, 100, 100)},
-            'Add Elf': {'rect': pygame.Rect(650, 290, 150, 40), 'color': (100, 100, 100)},
-            'Add Robber': {'rect': pygame.Rect(650, 350, 150, 40), 'color': (100, 100, 100)},
-            'Save': {'rect': pygame.Rect(650, 410, 150, 40), 'color': (100, 100, 0)},
-            'Load': {'rect': pygame.Rect(650, 470, 150, 40), 'color': (0, 100, 100)},
-        }
+        self.buttons = []
+        button_y = 50
+        button_spacing = 60
+        button_data = [
+            ('Start', self.start_simulation),
+            ('Stop', self.stop_simulation),
+            ('Next Step', self.next_step),
+            ('Add Squirrel', lambda: self.select_npc('Squirrel')),
+            ('Add Elf', lambda: self.select_npc('Elf')),
+            ('Add Robber', lambda: self.select_npc('Robber')),
+            ('Save', self.save_npcs),
+            ('Load', self.load_npcs),
+            ('Load From File', self.load_npcs_from_file),
+        ]
+
+        for text, action in button_data:
+            button = Button(
+                text=text,
+                rect=(SCREEN_WIDTH - 20, button_y, 250, 50),  # Начальное положение за пределами экрана
+                inactive_color=(70, 70, 70),
+                active_color=(100, 100, 100),
+                action=action,
+                font=self.font
+            )
+            self.buttons.append(button)
+            button_y += button_spacing
+
+    def start_simulation(self):
+        self.controller.paused = False
+        self.add_notification('Simulation Started')
+
+    def stop_simulation(self):
+        self.controller.paused = True
+        self.add_notification('Simulation Stopped')
+
+    def next_step(self):
+        self.controller.next_step()
+        self.add_notification('Next Step Executed')
+
+    def select_npc(self, npc_type):
+        self.selected_npc_type = npc_type
+        self.add_notification(f'{npc_type} Selected')
+
+    def save_npcs(self):
+        self.controller.save_npcs('npcs.dat')
+        self.add_notification('NPCs Saved')
+
+    def load_npcs(self):
+        self.controller.load_npcs('npcs.dat')
+        self.add_notification('NPCs Loaded')
+
+    def load_npcs_from_file(self):
+        self.controller.load_npcs_from_file('npcs.txt')
+        self.add_notification('NPCs Loaded from File')
+
+    def add_notification(self, text):
+        notification = Notification(text, duration=2, font=self.large_font, screen_width=SCREEN_WIDTH)
+        self.notifications.append(notification)
+
+    def load_parallax_background(self):
+        layers = []
+        for i in range(1, 4):
+            layer = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+            green_value = 30 + i * 20
+            layer.fill((green_value // 2, green_value, green_value // 2, 100))
+            layers.append(layer)
+        return layers
+
+    def generate_forest_background(self):
+        forest_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+        tree_color = (34, 139, 34)
+        num_trees = 150
+        for _ in range(num_trees):
+            x = random.randint(0, SCREEN_WIDTH - 50)
+            y = random.randint(0, SCREEN_HEIGHT - 50)
+            tree_width = random.randint(20, 40)
+            tree_height = random.randint(40, 80)
+            sway_offset = random.uniform(-5, 5)
+            pygame.draw.rect(forest_surface, (139, 69, 19), (x + tree_width // 2 - 5 + sway_offset, y + tree_height // 2, 10, tree_height // 2))
+            pygame.draw.ellipse(forest_surface, tree_color, (x + sway_offset, y, tree_width, tree_height))
+        return forest_surface
+
+    def update_forest_animation(self):
+        # Анимация листвы (простое смещение)
+        self.forest_surface.scroll(dx=int(math.sin(time.time()) * 1), dy=0)
+
+    def update_time_of_day(self):
+        # Меняем время суток каждые 30 секунд
+        if int(time.time()) % 60 < 30:
+            self.time_of_day = 0  # День
+        else:
+            self.time_of_day = 1  # Ночь
+
+    def update_weather(self):
+        # Меняем погоду каждые 20 секунд
+        current_time = time.time()
+        if current_time - self.last_weather_change > 20:
+            self.last_weather_change = current_time
+            self.weather = random.choice(['rain', 'snow', None])
+            if self.weather:
+                self.weather_effect = WeatherEffect(self.weather, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            else:
+                self.weather_effect = None
+
+    def draw_parallax_background(self):
+        for i, layer in enumerate(self.parallax_layers):
+            offset_x = i * 10
+            offset_y = i * 10
+            self.screen.blit(layer, (-offset_x, -offset_y))
+
+    def draw_forest_background(self):
+        self.screen.blit(self.forest_surface, (0, 0))
+
+    def apply_time_of_day_effect(self):
+        overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+        if self.time_of_day == 1:
+            overlay.fill((0, 0, 30, 100))  # Темный синий оттенок для ночи
+        else:
+            overlay.fill((255, 255, 224, 30))  # Светлый оттенок для дня
+        self.screen.blit(overlay, (0, 0))
+
+    def draw_weather_effects(self, dt):
+        if self.weather_effect:
+            self.weather_effect.update(dt)
+            self.weather_effect.draw(self.screen)
 
     def draw_buttons(self):
-        mouse_pos = pygame.mouse.get_pos()
-        for name, button in self.buttons.items():
-            rect = button['rect']
-            color = button['color']
-            hover = rect.collidepoint(mouse_pos)
-            pygame.draw.rect(self.screen, color, rect, border_radius=10)
-            if hover:
-                pygame.draw.rect(self.screen, (255, 255, 255), rect, 3, border_radius=10)
-            text_surf = self.font.render(name, True, (255, 255, 255))
-            text_rect = text_surf.get_rect(center=rect.center)
-            self.screen.blit(text_surf, text_rect)
+        for button in self.buttons:
+            button.draw(self.screen)
 
     def draw_statistics(self):
         counts = {'Squirrel': 0, 'Elf': 0, 'Robber': 0}
@@ -56,54 +310,73 @@ class GameView:
                 counts[npc.get_type()] += 1
         y = 10
         for npc_type, count in counts.items():
-            bar_length = 100
-            max_count = max(counts.values()) or 1  # Avoid division by zero
+            bar_length = 150
+            max_count = max(counts.values()) or 1
             bar_width = int((count / max_count) * bar_length)
             text_surf = self.font.render(f"{npc_type}s alive: {count}", True, (255, 255, 255))
-            self.screen.blit(text_surf, (10, y))
-            pygame.draw.rect(self.screen, (255, 255, 255), (150, y + 5, bar_length, 10), 1)
-            pygame.draw.rect(self.screen, (0, 255, 0), (150, y + 5, bar_width, 10))
-            y += 30
+            self.screen.blit(text_surf, (20, y))
+            pygame.draw.rect(self.screen, (100, 100, 100), (200, y + 5, bar_length, 20), border_radius=5)
+            pygame.draw.rect(self.screen, (0, 200, 0), (200, y + 5, bar_width, 20), border_radius=5)
+            y += 40
 
     def draw_panel(self):
-        pygame.draw.rect(self.screen, (50, 50, 50), (600, 0, 200, SCREEN_HEIGHT))  # Панель управления
-        pygame.draw.line(self.screen, (255, 255, 255), (600, 0), (600, SCREEN_HEIGHT), 3)  # Разделитель
+        # Убираем панель, так как кнопки теперь выдвигаются сбоку
+        pass
 
     def draw_npcs(self):
         npcs = self.controller.get_npcs()
         targets = getattr(self.controller, 'targets', {})
         for npc in npcs:
-            if npc.is_alive():
-                x, y = int(npc.get_x()), int(npc.get_y())
-                npc_type = npc.get_type()
-                image = self.npc_images[npc.get_type()]
-                rect = image.get_rect(center=(x, y))
-                self.screen.blit(image, rect)
+            x, y = int(npc.get_x()), int(npc.get_y())
+            npc_type = npc.get_type()
+            image = self.npc_images[npc_type]
+            rect = image.get_rect(center=(x, y))
+            # Рисуем тень
+            shadow = pygame.Surface((rect.width, rect.height), pygame.SRCALPHA)
+            pygame.draw.ellipse(shadow, (0, 0, 0, 100), shadow.get_rect())
+            self.screen.blit(shadow, (rect.x, rect.y + 10))
+            # Рисуем NPC
+            self.screen.blit(image, rect)
 
-                color = self.npc_colors.get(npc_type, (255, 255, 255))
-                # Draw attack radius
-                fight_distance = self.controller.fight_distance
-                pygame.draw.circle(self.screen, color, (x, y), int(fight_distance), 1)
+            color = self.npc_colors.get(npc_type, (255, 255, 255))
+            attack_range = npc.get_attack_range()
+            pygame.draw.circle(self.screen, color, (x, y), int(attack_range), 1)
 
-                # Draw NPC name
-                text = self.font.render(npc.get_name(), True, (255, 255, 255))
-                self.screen.blit(text, (x + 10, y - 10))
+            text = self.font.render(npc.get_name(), True, (255, 255, 255))
+            self.screen.blit(text, (x + 10, y - 10))
 
-                # Draw line to target
-                target = targets.get(npc)
-                if target and target.is_alive():
-                    target_x, target_y = int(target.get_x()), int(target.get_y())
-                    pygame.draw.line(self.screen, color, (x, y), (target_x, target_y))
+            health = npc.get_health()
+            health_bar_width = 40
+            max_health = npc.get_health()
+            health_ratio = health / max_health
+            health_bar_color = (int(255 * (1 - health_ratio)), int(255 * health_ratio), 0)
+            pygame.draw.rect(self.screen, (100, 100, 100), (x - health_bar_width // 2, y - 30, health_bar_width, 5))
+            pygame.draw.rect(self.screen, health_bar_color, (x - health_bar_width // 2, y - 30, int(health_bar_width * health_ratio), 5))
+
+            target = targets.get(npc)
+            if target and target.is_alive():
+                target_x, target_y = int(target.get_x()), int(target.get_y())
+                pygame.draw.line(self.screen, color, (x, y), (target_x, target_y), 1)
+
+    def draw_notifications(self):
+        for notification in self.notifications[:]:
+            notification.update()
+            notification.draw(self.screen)
+            if notification.alpha == 0:
+                self.notifications.remove(notification)
 
     def draw(self):
-        self.screen.fill(BG_COLOR)
-        self.draw_panel()
+        self.draw_parallax_background()
+        self.draw_forest_background()
+        self.apply_time_of_day_effect()
+        self.draw_weather_effects(self.clock.get_time() / 1000)
         self.draw_npcs()
         self.draw_buttons()
         self.draw_statistics()
+        self.draw_notifications()
         if self.selected_npc_type:
             text_surf = self.font.render(f"Placing: {self.selected_npc_type}", True, (255, 255, 0))
-            self.screen.blit(text_surf, (10, SCREEN_HEIGHT - 30))
+            self.screen.blit(text_surf, (20, SCREEN_HEIGHT - 40))
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -112,40 +385,26 @@ class GameView:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = event.pos
-                for name, button in self.buttons.items():
-                    if button['rect'].collidepoint(mouse_pos):
-                        self.handle_button_click(name)
+                for button in self.buttons:
+                    button.handle_event(event)
                 if self.selected_npc_type:
-                    x, y = mouse_pos
-                    if x <= 500 and y <= 500:
+                    x, y = pygame.mouse.get_pos()
+                    if x <= SCREEN_WIDTH:
                         npc_name = f"{self.selected_npc_type}_{len(self.controller.get_npcs())+1}"
                         self.controller.add_npc(self.selected_npc_type, npc_name, x, y)
+                        self.add_notification(f"{self.selected_npc_type} Added")
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.selected_npc_type = None
-
-    def handle_button_click(self, name):
-        if name == 'Start':
-            self.controller.paused = False
-        elif name == 'Stop':
-            self.controller.paused = True
-        elif name == 'Next Step':
-            self.controller.next_step()
-        elif name == 'Add Squirrel':
-            self.selected_npc_type = 'Squirrel'
-        elif name == 'Add Elf':
-            self.selected_npc_type = 'Elf'
-        elif name == 'Add Robber':
-            self.selected_npc_type = 'Robber'
-        elif name == 'Save':
-            self.controller.save_npcs('npcs.dat')
-        elif name == 'Load':
-            self.controller.load_npcs('npcs.dat')
+        for button in self.buttons:
+            button.update()
 
     def update(self):
         if not self.controller.paused:
             self.controller.next_step()
+        self.update_forest_animation()
+        self.update_time_of_day()
+        self.update_weather()
 
     def main_loop(self):
         while True:
@@ -154,6 +413,10 @@ class GameView:
             self.draw()
             pygame.display.flip()
             self.clock.tick(FPS)
+
+    def generate_npc_images(self):
+        from generate_images import generate_npc_images
+        generate_npc_images()
 
 if __name__ == "__main__":
     game = GameView()
