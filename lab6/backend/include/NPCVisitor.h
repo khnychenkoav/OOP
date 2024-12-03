@@ -1,5 +1,3 @@
-// backend/include/NPCVisitor.h
-
 #ifndef NPCVISITOR_H
 #define NPCVISITOR_H
 

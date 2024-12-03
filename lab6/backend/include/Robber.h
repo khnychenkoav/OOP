@@ -1,5 +1,3 @@
-// backend/include/Robber.h
-
 #ifndef ROBBER_H
 #define ROBBER_H
 

@@ -1,5 +1,3 @@
-// backend/include/ConcreteNPCFactory.h
-
 #ifndef CONCRETENPCFACTORY_H
 #define CONCRETENPCFACTORY_H
 

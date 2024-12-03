@@ -1,5 +1,3 @@
-# frontend/game_view.py
-
 import pygame
 import sys
 import time
@@ -19,10 +17,10 @@ class Button:
         self.action = action
         self.font = font
         self.hovered = False
-        self.animation_progress = 0  # Для анимации при наведении
-        self.visibility = 1.0  # Прозрачность кнопки
+        self.animation_progress = 0
+        self.visibility = 1.0
         self.full_width = self.rect.width
-        self.hidden_width = 20  # Ширина видимой части в скрытом состоянии
+        self.hidden_width = 20
         self.visible_x = SCREEN_WIDTH - self.full_width
         self.hidden_x = SCREEN_WIDTH - self.hidden_width
         self.rect.x = self.hidden_x
@@ -31,7 +29,7 @@ class Button:
         self.update()
         shadow_offset = 5
         shadow_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
-        shadow_color = (0, 0, 0, int(100 * self.visibility))  # Полупрозрачная тень
+        shadow_color = (0, 0, 0, int(100 * self.visibility))
         pygame.draw.rect(shadow_surface, shadow_color, shadow_surface.get_rect(), border_radius=10)
         surface.blit(shadow_surface, (self.rect.x + shadow_offset, self.rect.y + shadow_offset))
 
@@ -47,7 +45,6 @@ class Button:
 
     def update(self):
         mouse_pos = pygame.mouse.get_pos()
-        # Проверяем, находится ли курсор над кнопкой
         if self.rect.collidepoint(mouse_pos):
             self.hovered = True
             self.animation_progress = min(self.animation_progress + 0.1, 1)
@@ -55,13 +52,10 @@ class Button:
             self.hovered = False
             self.animation_progress = max(self.animation_progress - 0.1, 0)
 
-        # Анимация выдвижения кнопки
         self.rect.x = self.hidden_x + (self.visible_x - self.hidden_x) * self.ease_in_out(self.animation_progress)
 
-        # Изменение цвета с плавной анимацией
         self.color = self.interpolate_color(self.inactive_color, self.active_color, self.ease_in_out(self.animation_progress))
 
-        # Полупрозрачность кнопки
         self.visibility = 0.7 + 0.3 * self.animation_progress  # От 0.7 до 1.0
 
     def interpolate_color(self, color_start, color_end, progress):
@@ -167,8 +161,8 @@ class GameView:
         self.setup_ui()
         self.parallax_layers = self.load_parallax_background()
         self.forest_surface = self.generate_forest_background()
-        self.time_of_day = 0  # 0 - день, 1 - ночь
-        self.weather = None  # 'rain' или 'snow' или None
+        self.time_of_day = 0
+        self.weather = None
         self.last_weather_change = time.time()
         self.weather_effect = None
 
@@ -191,7 +185,7 @@ class GameView:
         for text, action in button_data:
             button = Button(
                 text=text,
-                rect=(SCREEN_WIDTH - 20, button_y, 250, 50),  # Начальное положение за пределами экрана
+                rect=(SCREEN_WIDTH - 20, button_y, 250, 50),
                 inactive_color=(70, 70, 70),
                 active_color=(100, 100, 100),
                 action=action,
@@ -256,18 +250,15 @@ class GameView:
         return forest_surface
 
     def update_forest_animation(self):
-        # Анимация листвы (простое смещение)
         self.forest_surface.scroll(dx=int(math.sin(time.time()) * 1), dy=0)
 
     def update_time_of_day(self):
-        # Меняем время суток каждые 30 секунд
         if int(time.time()) % 60 < 30:
-            self.time_of_day = 0  # День
+            self.time_of_day = 0
         else:
-            self.time_of_day = 1  # Ночь
+            self.time_of_day = 1
 
     def update_weather(self):
-        # Меняем погоду каждые 20 секунд
         current_time = time.time()
         if current_time - self.last_weather_change > 20:
             self.last_weather_change = current_time
@@ -289,9 +280,9 @@ class GameView:
     def apply_time_of_day_effect(self):
         overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
         if self.time_of_day == 1:
-            overlay.fill((0, 0, 30, 100))  # Темный синий оттенок для ночи
+            overlay.fill((0, 0, 30, 100))
         else:
-            overlay.fill((255, 255, 224, 30))  # Светлый оттенок для дня
+            overlay.fill((255, 255, 224, 30))
         self.screen.blit(overlay, (0, 0))
 
     def draw_weather_effects(self, dt):
@@ -318,11 +309,6 @@ class GameView:
             pygame.draw.rect(self.screen, (100, 100, 100), (200, y + 5, bar_length, 20), border_radius=5)
             pygame.draw.rect(self.screen, (0, 200, 0), (200, y + 5, bar_width, 20), border_radius=5)
             y += 40
-
-    def draw_panel(self):
-        # Убираем панель, так как кнопки теперь выдвигаются сбоку
-        pass
-
     def draw_npcs(self):
         npcs = self.controller.get_npcs()
         targets = getattr(self.controller, 'targets', {})
@@ -331,11 +317,9 @@ class GameView:
             npc_type = npc.get_type()
             image = self.npc_images[npc_type]
             rect = image.get_rect(center=(x, y))
-            # Рисуем тень
             shadow = pygame.Surface((rect.width, rect.height), pygame.SRCALPHA)
             pygame.draw.ellipse(shadow, (0, 0, 0, 100), shadow.get_rect())
             self.screen.blit(shadow, (rect.x, rect.y + 10))
-            # Рисуем NPC
             self.screen.blit(image, rect)
 
             color = self.npc_colors.get(npc_type, (255, 255, 255))

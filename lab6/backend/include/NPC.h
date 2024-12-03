@@ -1,5 +1,3 @@
-// backend/include/NPC.h
-
 #ifndef NPC_H
 #define NPC_H
 
@@ -24,7 +22,7 @@ public:
     virtual void setPosition(double x, double y) = 0;
     virtual void move() = 0;
     virtual void moveTowards(double targetX, double targetY) = 0;
-    virtual void moveAwayFrom(double targetX, double targetY) = 0; // Новый метод
+    virtual void moveAwayFrom(double targetX, double targetY) = 0;
 };
 
 #endif // NPC_H

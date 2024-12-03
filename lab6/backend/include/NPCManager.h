@@ -1,5 +1,3 @@
-// backend/include/NPCManager.h
-
 #ifndef NPCMANAGER_H
 #define NPCMANAGER_H
 

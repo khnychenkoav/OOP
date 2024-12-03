@@ -1,5 +1,3 @@
-// backend/src/NPCManager.cpp
-
 #include "NPCManager.h"
 #include "ConcreteNPCFactory.h"
 #include <fstream>

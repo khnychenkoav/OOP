@@ -1,5 +1,3 @@
-// backend/include/Squirrel.h
-
 #ifndef SQUIRREL_H
 #define SQUIRREL_H
 

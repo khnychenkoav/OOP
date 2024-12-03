@@ -1,5 +1,3 @@
-// backend/include/Elf.h
-
 #ifndef ELF_H
 #define ELF_H
 

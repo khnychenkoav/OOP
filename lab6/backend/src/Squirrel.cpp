@@ -1,5 +1,3 @@
-// backend/src/Squirrel.cpp
-
 #include "Squirrel.h"
 #include "NPCVisitor.h"
 #include <random>

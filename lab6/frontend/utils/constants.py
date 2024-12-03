@@ -1,4 +1,3 @@
-# frontend/utils/constants.py
 
 SCREEN_WIDTH = 850
 SCREEN_HEIGHT = 600

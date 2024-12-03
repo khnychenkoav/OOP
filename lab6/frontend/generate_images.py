@@ -1,5 +1,3 @@
-# generate_images.py
-
 import os
 import random
 from PIL import Image, ImageDraw

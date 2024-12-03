@@ -1,5 +1,3 @@
-// backend/src/ConcreteNPCFactory.cpp
-
 #include "ConcreteNPCFactory.h"
 #include "Squirrel.h"
 #include "Elf.h"

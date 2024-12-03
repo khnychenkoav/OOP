@@ -1,5 +1,3 @@
-// backend/include/NPCFactory.h
-
 #ifndef NPCFACTORY_H
 #define NPCFACTORY_H
 

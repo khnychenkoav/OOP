@@ -1,5 +1,3 @@
-// backend/src/Elf.cpp
-
 #include "Elf.h"
 #include "NPCVisitor.h"
 #include <random>

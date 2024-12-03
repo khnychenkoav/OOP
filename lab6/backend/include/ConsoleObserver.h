@@ -1,5 +1,3 @@
-// backend/include/ConsoleObserver.h
-
 #ifndef CONSOLEOBSERVER_H
 #define CONSOLEOBSERVER_H
 

@@ -1,5 +1,3 @@
-// backend/include/FileObserver.h
-
 #ifndef FILEOBSERVER_H
 #define FILEOBSERVER_H
 

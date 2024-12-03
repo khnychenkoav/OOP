@@ -1,5 +1,3 @@
-// backend/src/Robber.cpp
-
 #include "Robber.h"
 #include "NPCVisitor.h"
 #include <random>

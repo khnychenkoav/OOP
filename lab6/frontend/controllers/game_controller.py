@@ -1,5 +1,3 @@
-# frontend/controllers/game_controller.py
-
 import pickle
 import game_backend
 import os
