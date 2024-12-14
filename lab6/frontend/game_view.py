@@ -6,6 +6,7 @@ import random
 from controllers.game_controller import GameController
 from utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, BG_COLOR, FPS
 
+
 class Button:
     def __init__(self, text, rect, inactive_color, active_color, action=None, font=None):
         self.text = text
@@ -28,18 +29,23 @@ class Button:
     def draw(self, surface):
         self.update()
         shadow_offset = 5
-        shadow_surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+        shadow_surface = pygame.Surface(
+            (self.rect.width, self.rect.height), pygame.SRCALPHA)
         shadow_color = (0, 0, 0, int(100 * self.visibility))
-        pygame.draw.rect(shadow_surface, shadow_color, shadow_surface.get_rect(), border_radius=10)
-        surface.blit(shadow_surface, (self.rect.x + shadow_offset, self.rect.y + shadow_offset))
+        pygame.draw.rect(shadow_surface, shadow_color,
+                         shadow_surface.get_rect(), border_radius=10)
+        surface.blit(shadow_surface, (self.rect.x +
+                     shadow_offset, self.rect.y + shadow_offset))
 
         color_with_alpha = (*self.color[:3], int(255 * self.visibility))
         button_surface = pygame.Surface(self.rect.size, pygame.SRCALPHA)
-        pygame.draw.rect(button_surface, color_with_alpha, button_surface.get_rect(), border_radius=10)
+        pygame.draw.rect(button_surface, color_with_alpha,
+                         button_surface.get_rect(), border_radius=10)
         if self.font:
             text_surf = self.font.render(self.text, True, (255, 255, 255))
             text_surf.set_alpha(int(255 * self.visibility))
-            text_rect = text_surf.get_rect(center=button_surface.get_rect().center)
+            text_rect = text_surf.get_rect(
+                center=button_surface.get_rect().center)
             button_surface.blit(text_surf, text_rect)
         surface.blit(button_surface, self.rect.topleft)
 
@@ -52,11 +58,14 @@ class Button:
             self.hovered = False
             self.animation_progress = max(self.animation_progress - 0.1, 0)
 
-        self.rect.x = self.hidden_x + (self.visible_x - self.hidden_x) * self.ease_in_out(self.animation_progress)
+        self.rect.x = self.hidden_x + \
+            (self.visible_x - self.hidden_x) * \
+            self.ease_in_out(self.animation_progress)
 
-        self.color = self.interpolate_color(self.inactive_color, self.active_color, self.ease_in_out(self.animation_progress))
+        self.color = self.interpolate_color(
+            self.inactive_color, self.active_color, self.ease_in_out(self.animation_progress))
 
-        self.visibility = 0.7 + 0.3 * self.animation_progress  # От 0.7 до 1.0
+        self.visibility = 0.7 + 0.3 * self.animation_progress
 
     def interpolate_color(self, color_start, color_end, progress):
         return (
@@ -72,6 +81,7 @@ class Button:
         if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos):
             if self.action:
                 self.action()
+
 
 class Notification:
     def __init__(self, text, duration, font, screen_width):
@@ -103,6 +113,7 @@ class Notification:
             rect = self.surface.get_rect(center=(self.screen_width // 2, 50))
             surface.blit(self.surface, rect)
 
+
 class WeatherEffect:
     def __init__(self, effect_type, screen_size):
         self.effect_type = effect_type
@@ -132,9 +143,12 @@ class WeatherEffect:
     def draw(self, surface):
         for particle in self.particles:
             if self.effect_type == 'rain':
-                pygame.draw.line(surface, (173, 216, 230), particle['pos'], (particle['pos'][0], particle['pos'][1] + 5))
+                pygame.draw.line(
+                    surface, (173, 216, 230), particle['pos'], (particle['pos'][0], particle['pos'][1] + 5))
             elif self.effect_type == 'snow':
-                pygame.draw.circle(surface, (255, 250, 250), particle['pos'], 3)
+                pygame.draw.circle(surface, (255, 250, 250),
+                                   particle['pos'], 3)
+
 
 class GameView:
     def __init__(self):
@@ -144,7 +158,8 @@ class GameView:
         self.clock = pygame.time.Clock()
         self.controller = GameController()
         self.font = pygame.font.Font('resources/fonts/Roboto-Regular.ttf', 20)
-        self.large_font = pygame.font.Font('resources/fonts/Roboto-Bold.ttf', 28)
+        self.large_font = pygame.font.Font(
+            'resources/fonts/Roboto-Bold.ttf', 28)
         self.generate_npc_images()
         self.npc_images = {
             'Squirrel': pygame.image.load('resources/images/generated/squirrel.png').convert_alpha(),
@@ -165,6 +180,7 @@ class GameView:
         self.weather = None
         self.last_weather_change = time.time()
         self.weather_effect = None
+        self.simulation_running = False
 
     def setup_ui(self):
         self.buttons = []
@@ -195,11 +211,13 @@ class GameView:
             button_y += button_spacing
 
     def start_simulation(self):
-        self.controller.paused = False
+        self.controller.start_game()
+        self.simulation_running = True
         self.add_notification('Simulation Started')
 
     def stop_simulation(self):
-        self.controller.paused = True
+        self.controller.stop_game()
+        self.simulation_running = False
         self.add_notification('Simulation Stopped')
 
     def next_step(self):
@@ -223,20 +241,23 @@ class GameView:
         self.add_notification('NPCs Loaded from File')
 
     def add_notification(self, text):
-        notification = Notification(text, duration=2, font=self.large_font, screen_width=SCREEN_WIDTH)
+        notification = Notification(
+            text, duration=2, font=self.large_font, screen_width=SCREEN_WIDTH)
         self.notifications.append(notification)
 
     def load_parallax_background(self):
         layers = []
         for i in range(1, 4):
-            layer = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+            layer = pygame.Surface(
+                (SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
             green_value = 30 + i * 20
             layer.fill((green_value // 2, green_value, green_value // 2, 100))
             layers.append(layer)
         return layers
 
     def generate_forest_background(self):
-        forest_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+        forest_surface = pygame.Surface(
+            (SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
         tree_color = (34, 139, 34)
         num_trees = 150
         for _ in range(num_trees):
@@ -245,8 +266,10 @@ class GameView:
             tree_width = random.randint(20, 40)
             tree_height = random.randint(40, 80)
             sway_offset = random.uniform(-5, 5)
-            pygame.draw.rect(forest_surface, (139, 69, 19), (x + tree_width // 2 - 5 + sway_offset, y + tree_height // 2, 10, tree_height // 2))
-            pygame.draw.ellipse(forest_surface, tree_color, (x + sway_offset, y, tree_width, tree_height))
+            pygame.draw.rect(forest_surface, (139, 69, 19), (x + tree_width //
+                             2 - 5 + sway_offset, y + tree_height // 2, 10, tree_height // 2))
+            pygame.draw.ellipse(forest_surface, tree_color,
+                                (x + sway_offset, y, tree_width, tree_height))
         return forest_surface
 
     def update_forest_animation(self):
@@ -264,7 +287,8 @@ class GameView:
             self.last_weather_change = current_time
             self.weather = random.choice(['rain', 'snow', None])
             if self.weather:
-                self.weather_effect = WeatherEffect(self.weather, (SCREEN_WIDTH, SCREEN_HEIGHT))
+                self.weather_effect = WeatherEffect(
+                    self.weather, (SCREEN_WIDTH, SCREEN_HEIGHT))
             else:
                 self.weather_effect = None
 
@@ -278,7 +302,8 @@ class GameView:
         self.screen.blit(self.forest_surface, (0, 0))
 
     def apply_time_of_day_effect(self):
-        overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+        overlay = pygame.Surface(
+            (SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
         if self.time_of_day == 1:
             overlay.fill((0, 0, 30, 100))
         else:
@@ -304,11 +329,20 @@ class GameView:
             bar_length = 150
             max_count = max(counts.values()) or 1
             bar_width = int((count / max_count) * bar_length)
-            text_surf = self.font.render(f"{npc_type}s alive: {count}", True, (255, 255, 255))
+            text_surf = self.font.render(
+                f"{npc_type}s alive: {count}", True, (255, 255, 255))
             self.screen.blit(text_surf, (20, y))
-            pygame.draw.rect(self.screen, (100, 100, 100), (200, y + 5, bar_length, 20), border_radius=5)
-            pygame.draw.rect(self.screen, (0, 200, 0), (200, y + 5, bar_width, 20), border_radius=5)
+            pygame.draw.rect(self.screen, (100, 100, 100),
+                             (200, y + 5, bar_length, 20), border_radius=5)
+            pygame.draw.rect(self.screen, (0, 200, 0),
+                             (200, y + 5, bar_width, 20), border_radius=5)
             y += 40
+
+        active_threads = self.controller.get_active_thread_count()
+        thread_text = self.font.render(
+            f"Active Threads: {active_threads}", True, (255, 255, 255))
+        self.screen.blit(thread_text, (20, y))
+
     def draw_npcs(self):
         npcs = self.controller.get_npcs()
         targets = getattr(self.controller, 'targets', {})
@@ -324,7 +358,8 @@ class GameView:
 
             color = self.npc_colors.get(npc_type, (255, 255, 255))
             attack_range = npc.get_attack_range()
-            pygame.draw.circle(self.screen, color, (x, y), int(attack_range), 1)
+            pygame.draw.circle(self.screen, color, (x, y),
+                               int(attack_range), 1)
 
             text = self.font.render(npc.get_name(), True, (255, 255, 255))
             self.screen.blit(text, (x + 10, y - 10))
@@ -333,14 +368,18 @@ class GameView:
             health_bar_width = 40
             max_health = npc.get_health()
             health_ratio = health / max_health
-            health_bar_color = (int(255 * (1 - health_ratio)), int(255 * health_ratio), 0)
-            pygame.draw.rect(self.screen, (100, 100, 100), (x - health_bar_width // 2, y - 30, health_bar_width, 5))
-            pygame.draw.rect(self.screen, health_bar_color, (x - health_bar_width // 2, y - 30, int(health_bar_width * health_ratio), 5))
+            health_bar_color = (int(255 * (1 - health_ratio)),
+                                int(255 * health_ratio), 0)
+            pygame.draw.rect(self.screen, (100, 100, 100), (x -
+                             health_bar_width // 2, y - 30, health_bar_width, 5))
+            pygame.draw.rect(self.screen, health_bar_color, (x - health_bar_width //
+                             2, y - 30, int(health_bar_width * health_ratio), 5))
 
             target = targets.get(npc)
             if target and target.is_alive():
                 target_x, target_y = int(target.get_x()), int(target.get_y())
-                pygame.draw.line(self.screen, color, (x, y), (target_x, target_y), 1)
+                pygame.draw.line(self.screen, color, (x, y),
+                                 (target_x, target_y), 1)
 
     def draw_notifications(self):
         for notification in self.notifications[:]:
@@ -359,7 +398,8 @@ class GameView:
         self.draw_statistics()
         self.draw_notifications()
         if self.selected_npc_type:
-            text_surf = self.font.render(f"Placing: {self.selected_npc_type}", True, (255, 255, 0))
+            text_surf = self.font.render(
+                f"Placing: {self.selected_npc_type}", True, (255, 255, 0))
             self.screen.blit(text_surf, (20, SCREEN_HEIGHT - 40))
 
     def handle_events(self):
@@ -374,9 +414,12 @@ class GameView:
                 if self.selected_npc_type:
                     x, y = pygame.mouse.get_pos()
                     if x <= SCREEN_WIDTH:
-                        npc_name = f"{self.selected_npc_type}_{len(self.controller.get_npcs())+1}"
-                        self.controller.add_npc(self.selected_npc_type, npc_name, x, y)
-                        self.add_notification(f"{self.selected_npc_type} Added")
+                        npc_name = f"{self.selected_npc_type}_{
+                            len(self.controller.get_npcs())+1}"
+                        self.controller.add_npc(
+                            self.selected_npc_type, npc_name, x, y)
+                        self.add_notification(
+                            f"{self.selected_npc_type} Added")
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.selected_npc_type = None
@@ -401,6 +444,7 @@ class GameView:
     def generate_npc_images(self):
         from generate_images import generate_npc_images
         generate_npc_images()
+
 
 if __name__ == "__main__":
     game = GameView()

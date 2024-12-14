@@ -1,5 +1,9 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/functional.h>
+#include <thread>
+#include <vector>
+#include <string>
 #include "NPC.h"
 #include "Squirrel.h"
 #include "Elf.h"
@@ -9,6 +13,7 @@
 #include "ConsoleObserver.h"
 #include "FileObserver.h"
 #include "NPCManager.h"
+#include "NPCVisitor.h"
 
 namespace py = pybind11;
 
@@ -21,15 +26,24 @@ PYBIND11_MODULE(game_backend, m) {
         .def("get_y", &NPC::getY)
         .def("get_health", &NPC::getHealth)
         .def("set_health", &NPC::setHealth)
-        .def("get_damage", &NPC::getDamage)
-        .def("get_attack_range", &NPC::getAttackRange)
-        .def("set_attack_range", &NPC::setAttackRange)
         .def("is_alive", &NPC::isAlive)
         .def("die", &NPC::die)
-        .def("set_position", &NPC::setPosition)
         .def("move", &NPC::move)
         .def("move_towards", &NPC::moveTowards)
-        .def("move_away_from", &NPC::moveAwayFrom);
+        .def("move_away_from", &NPC::moveAwayFrom)
+        .def("get_attack_range", &NPC::getAttackRange) 
+        .def("set_attack_range", &NPC::setAttackRange);
+
+    py::class_<NPCVisitor, std::shared_ptr<NPCVisitor>>(m, "NPCVisitor")
+        .def("visit", [](NPCVisitor& self, Squirrel& npc) { self.visit(npc); })
+        .def("visit", [](NPCVisitor& self, Elf& npc) { self.visit(npc); })
+        .def("visit", [](NPCVisitor& self, Robber& npc) { self.visit(npc); });
+
+    py::class_<FightVisitor, NPCVisitor, std::shared_ptr<FightVisitor>>(m, "FightVisitor")
+        .def(py::init<NPCManager&>(), py::keep_alive<1, 2>())
+        .def("add_observer", &FightVisitor::addObserver)
+        .def("reset_processed_fights", &FightVisitor::resetProcessedFights)
+        .def("get_targets", &FightVisitor::getTargets);
 
     py::class_<Squirrel, NPC, std::shared_ptr<Squirrel>>(m, "Squirrel")
         .def(py::init<const std::string&, double, double>())
@@ -96,18 +110,17 @@ PYBIND11_MODULE(game_backend, m) {
     py::class_<FileObserver, Observer, std::shared_ptr<FileObserver>>(m, "FileObserver")
         .def(py::init<const std::string&>());
 
-    py::class_<NPCVisitor, std::shared_ptr<NPCVisitor>>(m, "NPCVisitor");
-
     py::class_<NPCManager>(m, "NPCManager")
         .def(py::init<>())
         .def("add_npc", &NPCManager::addNPC)
-        .def("get_npcs", &NPCManager::getNPCs, py::return_value_policy::reference_internal)
+        .def("get_npcs", [](NPCManager& manager) {
+            return manager.getNPCs();
+        })
         .def("remove_dead_npcs", &NPCManager::removeDeadNPCs)
-        .def("load_npcs_from_file", &NPCManager::loadNPCsFromFile);
-
-    py::class_<FightVisitor, NPCVisitor, std::shared_ptr<FightVisitor>>(m, "FightVisitor")
-        .def(py::init<NPCManager&>(), py::keep_alive<1, 2>())
-        .def("add_observer", &FightVisitor::addObserver)
-        .def("reset_processed_fights", &FightVisitor::resetProcessedFights)
-        .def("get_targets", &FightVisitor::getTargets);
+        .def("load_npcs_from_file", &NPCManager::loadNPCsFromFile)
+        .def("start_threads", &NPCManager::startThreads)
+        .def("stop_threads", &NPCManager::stopThreads)
+        .def("is_running", &NPCManager::isRunning)
+        .def("log_status", &NPCManager::logStatus)
+        .def("get_active_threads_count", &NPCManager::getActiveThreadsCount);
 }

@@ -892,3 +892,117 @@ Squirrel Squirrel_6 was defeated
 Robber Robber_3 attacked Squirrel Squirrel_7 for 25 damage
 Robber Robber_3 attacked Squirrel Squirrel_7 for 25 damage
 Squirrel Squirrel_7 was defeated
+Elf Elf_1 attacked Robber Robber_1 for 20 damage
+Elf Elf_1 attacked Robber Robber_1 for 20 damage
+Elf Elf_1 attacked Robber Robber_1 for 20 damage
+Elf Elf_1 attacked Robber Robber_1 for 20 damage
+Robber Robber_1 was defeated
+Elf Elf_1 attacked Robber Robber_1 for 20 damage
+Elf Elf_1 attacked Robber Robber_1 for 20 damage
+Elf Elf_1 attacked Robber Robber_1 for 20 damage
+Elf Elf_1 attacked Robber Robber_1 for 20 damage
+Robber Robber_1 was defeated
+Squirrel Squirrel_1 attacked Elf Elf_1 for 15 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 15 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 15 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 15 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 15 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 15 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 15 damage
+Elf Elf_1 was defeated
+Squirrel Squirrel_2 attacked Elf Elf_4 for 15 damage
+Squirrel Squirrel_2 attacked Elf Elf_4 for 15 damage
+Squirrel Squirrel_2 attacked Elf Elf_4 for 15 damage
+Squirrel Squirrel_2 attacked Elf Elf_4 for 15 damage
+Squirrel Squirrel_2 attacked Elf Elf_4 for 15 damage
+Squirrel Squirrel_2 attacked Elf Elf_4 for 15 damage
+Squirrel Squirrel_2 attacked Elf Elf_4 for 15 damage
+Elf Elf_4 was defeated
+Squirrel Squirrel_3 attacked Elf Elf_5 for 15 damage
+Squirrel Squirrel_3 attacked Elf Elf_5 for 15 damage
+Squirrel Squirrel_3 attacked Elf Elf_5 for 15 damage
+Squirrel Squirrel_3 attacked Elf Elf_5 for 15 damage
+Squirrel Squirrel_3 attacked Elf Elf_5 for 15 damage
+Squirrel Squirrel_3 attacked Elf Elf_5 for 15 damage
+Squirrel Squirrel_3 attacked Elf Elf_5 for 15 damage
+Elf Elf_5 was defeated
+Elf Elf_1 attacked Robber Robber_1 for 17 damage
+Elf Elf_1 attacked Robber Robber_1 for 22 damage
+Elf Elf_1 attacked Robber Robber_1 for 24 damage
+Elf Elf_1 attacked Robber Robber_1 for 24 damage
+Robber Robber_1 was defeated
+Squirrel Squirrel_1 attacked Elf Elf_1 for 17 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 16 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 16 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 16 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 15 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 15 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 18 damage
+Elf Elf_1 was defeated
+Robber Robber_4 attacked Squirrel Squirrel_1 for 25 damage
+Robber Robber_4 attacked Squirrel Squirrel_1 for 25 damage
+Squirrel Squirrel_1 was defeated
+Elf Elf_2 attacked Robber Robber_4 for 21 damage
+Elf Elf_3 attacked Robber Robber_4 for 20 damage
+Elf Elf_2 attacked Robber Robber_4 for 25 damage
+Elf Elf_3 attacked Robber Robber_4 for 20 damage
+Robber Robber_4 was defeated
+Elf Elf_3 attacked Robber Robber_4 for 22 damage
+Elf Elf_3 attacked Robber Robber_4 for 17 damage
+Elf Elf_3 attacked Robber Robber_4 for 17 damage
+Robber Robber_4 attacked Squirrel Squirrel_3 for 25 damage
+Elf Elf_3 attacked Robber Robber_4 for 18 damage
+Robber Robber_4 attacked Squirrel Squirrel_3 for 26 damage
+Squirrel Squirrel_3 was defeated
+Elf Elf_3 attacked Robber Robber_4 for 20 damage
+Robber Robber_4 was defeated
+Elf Elf_3 attacked Robber Robber_5 for 25 damage
+Elf Elf_3 attacked Robber Robber_5 for 21 damage
+Elf Elf_3 attacked Robber Robber_5 for 19 damage
+Elf Elf_3 attacked Robber Robber_5 for 19 damage
+Robber Robber_5 was defeated
+Elf Elf_1 attacked Robber Robber_1 for 17 damage
+Elf Elf_1 attacked Robber Robber_1 for 22 damage
+Elf Elf_1 attacked Robber Robber_1 for 24 damage
+Elf Elf_1 attacked Robber Robber_1 for 24 damage
+Robber Robber_1 was defeated
+Squirrel Squirrel_1 attacked Elf Elf_1 for 17 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 16 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 16 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 16 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 15 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 15 damage
+Squirrel Squirrel_1 attacked Elf Elf_1 for 18 damage
+Elf Elf_1 was defeated
+Elf Elf_1 attacked Robber Robber_1 for 17 damage
+Elf Elf_1 attacked Robber Robber_1 for 22 damage
+Elf Elf_1 attacked Robber Robber_1 for 24 damage
+Elf Elf_1 attacked Robber Robber_1 for 24 damage
+Robber Robber_1 was defeated
+Robber Robber_1 attacked Squirrel Squirrel_1 for 22 damage
+Robber Robber_1 attacked Squirrel Squirrel_1 for 27 damage
+Robber Robber_1 attacked Squirrel Squirrel_1 for 29 damage
+Squirrel Squirrel_1 was defeated
+Elf Elf_1 attacked Robber Robber_1 for 17 damage
+Elf Elf_1 attacked Robber Robber_1 for 22 damage
+Elf Elf_1 attacked Robber Robber_1 for 24 damage
+Elf Elf_1 attacked Robber Robber_1 for 24 damage
+Robber Robber_1 was defeated
+Elf Elf_1 attacked Robber Robber_1 for 17 damage
+Elf Elf_1 attacked Robber Robber_1 for 22 damage
+Elf Elf_1 attacked Robber Robber_1 for 24 damage
+Elf Elf_1 attacked Robber Robber_1 for 24 damage
+Robber Robber_1 was defeated
+Elf Elf_2 attacked Robber Robber_3 for 17 damage
+Robber Robber_1 attacked Squirrel Squirrel_2 for 22 damage
+Robber Robber_1 attacked Squirrel Squirrel_2 for 27 damage
+Robber Robber_1 attacked Squirrel Squirrel_2 for 29 damage
+Squirrel Squirrel_2 was defeated
+Squirrel Squirrel_4 attacked Elf Elf_2 for 15 damage
+Squirrel Squirrel_4 attacked Elf Elf_2 for 17 damage
+Squirrel Squirrel_4 attacked Elf Elf_2 for 12 damage
+Squirrel Squirrel_4 attacked Elf Elf_2 for 12 damage
+Squirrel Squirrel_4 attacked Elf Elf_2 for 15 damage
+Squirrel Squirrel_4 attacked Elf Elf_2 for 13 damage
+Squirrel Squirrel_4 attacked Elf Elf_2 for 16 damage
+Elf Elf_2 was defeated

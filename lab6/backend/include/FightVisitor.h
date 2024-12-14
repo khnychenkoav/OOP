@@ -4,10 +4,15 @@
 #include "NPCVisitor.h"
 #include "Observer.h"
 #include "NPCManager.h"
+#include "CustomGenerator.h"
 #include <vector>
 #include <memory>
 #include <unordered_set>
 #include <unordered_map>
+#include <mutex>
+#include <shared_mutex>
+
+class NPCManager;
 
 class FightVisitor : public NPCVisitor {
 public:
@@ -23,6 +28,7 @@ public:
     void visit(Elf& elf) override;
     void visit(Robber& robber) override;
     std::unordered_map<NPC*, NPC*> getTargets();
+    Generator<std::monostate> runCorutines();
 
 private:
     void fight(NPC& attacker, NPC& defender);
@@ -33,7 +39,8 @@ private:
     std::vector<std::shared_ptr<Observer>> observers;
     std::unordered_set<std::pair<NPC*, NPC*>, PairHash> processedFights;
     std::unordered_map<NPC*, NPC*> targets;
-
+    std::shared_mutex fightMutex;
+    std::shared_mutex movementMutex;
     
 };
 

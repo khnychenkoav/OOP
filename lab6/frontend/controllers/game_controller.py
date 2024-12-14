@@ -1,6 +1,8 @@
 import pickle
 import game_backend
 import os
+import time
+
 
 class GameController:
     def __init__(self):
@@ -11,6 +13,8 @@ class GameController:
         self.console_observer = game_backend.ConsoleObserver()
         self.file_observer = game_backend.FileObserver('logs/log.txt')
         self.observers_added = False
+        self.game_running = False
+        self.targets = {}
 
         if not self.observers_added:
             self.visitor.add_observer(self.console_observer)
@@ -94,5 +98,41 @@ class GameController:
         self.visitor.add_observer(self.console_observer)
         self.visitor.add_observer(self.file_observer)
 
+    def start_game(self):
+        if not self.game_running:
+            self.npc_manager.start_threads()
+            self.game_running = True
+            self.npc_manager.log_status("Game started.")
+
+    def stop_game(self):
+        if self.game_running:
+            self.npc_manager.stop_threads()
+            self.game_running = False
+            self.npc_manager.log_status("Game stopped.")
+
+    def get_active_thread_count(self):
+        return self.npc_manager.get_active_threads_count()
+
+    def monitor_game(self, duration=30):
+
+        self.start_game()
+        start_time = time.time()
+
+        try:
+            while time.time() - start_time < duration:
+                print(f"Active threads: {self.get_active_threads_count()}")
+                time.sleep(1)
+        finally:
+            self.stop_game()
+            self.log_remaining_npcs()
+
+    def log_remaining_npcs(self):
+        print("Remaining NPCs:")
+        for npc in self.get_npcs():
+            if npc.is_alive():
+                print(f"{npc.get_name()} ({npc.get_type()}) at ({
+                      npc.get_x()}, {npc.get_y()})")
+        print("Game over.")
+
     def cleanup(self):
-        pass
+        self.stop_game()

@@ -1,10 +1,12 @@
-# backend/CMakeLists.txt
-
-cmake_minimum_required(VERSION 3.4...3.18)
+cmake_minimum_required(VERSION 3.18)
 project(game_backend)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_compile_options(-fcoroutines)
+endif()
 
 include(FetchContent)
 
@@ -14,7 +16,6 @@ FetchContent_Declare(
 )
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
-
 
 find_package(pybind11 REQUIRED)
 
@@ -42,8 +43,8 @@ add_library(game_backend_lib STATIC
 
 target_include_directories(game_backend_lib PRIVATE include)
 
-
 enable_testing()
+
 add_executable(runTests
     tests/tests.cpp
 )
